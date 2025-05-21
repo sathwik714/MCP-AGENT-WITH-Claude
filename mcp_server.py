@@ -1,6 +1,4 @@
 """
-This script demonstrates how to create a simple MCP server that fetches
-the current price of a cryptocurrency using the CoinGecko API.
 It uses the FastMCP library to create the server and handle requests.
 """
 import httpx
@@ -16,13 +14,13 @@ mcp = FastMCP("crypto_price_tracker")
 
 # Now let's define our first tool - getting the current price of a cryptocurrency
 @mcp.tool()
-async def get_crypto_price(crypto_id: str, currency: str = "usd") -> str:
+async def get_crypto_price(crypto_id: str, currency: str = "INR") -> str:
     """
     Get the current price of a cryptocurrency in a specified currency.
     
     Parameters:
     - crypto_id: The ID of the cryptocurrency (e.g., 'bitcoin', 'ethereum')
-    - currency: The currency to display the price in (default: 'usd')
+    - currency: The currency to display the price in (default: '')
     
     Returns:
     - Current price information as a formatted string
@@ -37,7 +35,7 @@ async def get_crypto_price(crypto_id: str, currency: str = "usd") -> str:
     }
     
     try:
-        # Make the API call
+        # Making the API call
         async with httpx.AsyncClient() as client:
             response = await client.get(url, params=params)
             response.raise_for_status()  # Raise an exception for HTTP errors
@@ -58,9 +56,8 @@ async def get_crypto_price(crypto_id: str, currency: str = "usd") -> str:
     except Exception as e:
         return f"Error fetching price data: {str(e)}"
 
-# You can add more tools here, following the same pattern as above
+# we can add more tools here, following the same pattern as above
 
 # Run the MCP server
-# This will start the server and listen for incoming requests
 if __name__ == "__main__":
     mcp.run()
